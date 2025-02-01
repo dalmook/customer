@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>고객 및 직원 관리 시스템</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- 로그인 및 관리자 등록 섹션 (최초 화면) -->
+  <section id="login-section" class="content-section">
+    <h2>로그인</h2>
+    <div id="login-tabs">
+      <button id="show-employee-login">직원 로그인</button>
+      <button id="show-admin-login">관리자 로그인</button>
+      <button id="show-admin-register">관리자 등록</button>
+    </div>
+    <!-- 직원 로그인 폼 -->
+    <div id="employee-login-form-div" style="display: none;">
+      <h3>직원 로그인</h3>
+      <form id="employee-login-form">
+        <input type="text" id="employee-login-name" placeholder="이름" required>
+        <input type="password" id="employee-login-password" placeholder="비밀번호" required>
+        <button type="submit">로그인</button>
+      </form>
+    </div>
+    <!-- 관리자 로그인 폼 -->
+    <div id="admin-login-form-div" style="display: none;">
+      <h3>관리자 로그인</h3>
+      <form id="admin-login-form">
+        <input type="text" id="admin-login-name" placeholder="이름" required>
+        <input type="password" id="admin-login-password" placeholder="비밀번호" required>
+        <button type="submit">로그인</button>
+      </form>
+    </div>
+    <!-- 관리자 등록 폼 -->
+    <div id="admin-register-form-div" style="display: none;">
+      <h3>관리자 등록</h3>
+      <form id="admin-register-form">
+        <input type="text" id="admin-register-name" placeholder="이름" required>
+        <input type="password" id="admin-register-password" placeholder="비밀번호" required>
+        <button type="submit">등록</button>
+      </form>
+    </div>
+    <div id="login-result" class="result"></div>
+  </section>
+
+  <!-- 로그인 후 보여질 메인 화면 -->
+  <nav id="main-nav" style="display: none;">
+    <ul>
+      <li><a href="#" class="nav-link" data-section="member-section">회원 관리</a></li>
+      <li><a href="#" class="nav-link" data-section="attendance-section">직원 근태 관리</a></li>
+      <li><a href="#" class="nav-link" data-section="reservation-section">예약 관리</a></li>
+      <li><a href="#" id="admin-nav-link">관리자 패널</a></li>
+      <li><a href="#" id="logout-link">로그아웃</a></li>
+    </ul>
+  </nav>
+  <main id="main-content" style="display: none;">
+    <!-- 회원 관리 화면 -->
+    <section id="member-section" class="content-section">
+      <h2>회원 관리</h2>
+      <form id="member-form">
+        <input type="text" id="name" placeholder="이름" required>
+        <input type="email" id="email" placeholder="이메일" required>
+        <input type="text" id="membership_type" placeholder="회원권 종류" required>
+        <input type="date" id="start_date" required>
+        <input type="date" id="end_date" required>
+        <button type="submit">회원 등록</button>
+      </form>
+      <div id="member-result" class="result"></div>
+      <button id="load-members">회원 목록 불러오기</button>
+      <ul id="member-list"></ul>
+    </section>
+
+    <!-- 직원 근태 관리 화면 -->
+    <section id="attendance-section" class="content-section" style="display: none;">
+      <h2>직원 근태 관리</h2>
+      <!-- 직원 선택용 라디오 버튼 영역 -->
+      <div id="employee-selection">
+        <h3>직원 선택</h3>
+        <div id="employee-radio-list">
+          <!-- script.js에서 직원 목록을 불러와 라디오 버튼 생성 -->
+        </div>
+      </div>
+      <!-- 출근 등록 -->
+      <div class="attendance-controls">
+        <h3>출근 등록</h3>
+        <form id="attendance-form">
+          <button type="submit">출근</button>
+        </form>
+      </div>
+      <!-- 퇴근 등록 -->
+      <div class="attendance-controls">
+        <h3>퇴근 등록</h3>
+        <form id="checkout-form">
+          <button type="submit">퇴근</button>
+        </form>
+      </div>
+      <button id="load-attendance">근태 기록 불러오기</button>
+      <table id="attendance-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>직원 이름</th>
+            <th>출근 시간</th>
+            <th>퇴근 시간</th>
+            <th>근무 시간</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <!-- 근태 요약 영역 -->
+      <div id="summary-section">
+        <h3>직원별 일별 근무시간 현황 (시간 단위)</h3>
+        <div id="daily-summary">
+          <!-- JavaScript에서 표 형태로 생성 -->
+        </div>
+        <h3>직원별 월별 총 근무시간 현황 (시간 단위)</h3>
+        <div id="monthly-summary">
+          <!-- JavaScript에서 표 형태로 생성 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 예약 관리 화면 -->
+    <section id="reservation-section" class="content-section" style="display: none;">
+      <h2>예약 관리</h2>
+      <form id="reservation-form">
+        <input type="text" id="customer_name" placeholder="고객 이름" required>
+        <input type="date" id="reservation_date" required>
+        <button type="submit">예약 등록</button>
+      </form>
+      <div id="reservation-result" class="result"></div>
+      <button id="load-reservations">예약 목록 불러오기</button>
+      <ul id="reservation-list"></ul>
+      <button id="sync-naver">네이버예약 동기화</button>
+      <div id="sync-result" class="result"></div>
+    </section>
+
+    <!-- 관리자 패널 화면 -->
+    <section id="admin-panel-section" class="content-section" style="display: none;">
+      <h2>관리자 패널</h2>
+      <nav>
+        <ul>
+          <li><a href="#" class="admin-sub-link" data-section="admin-sales-section">매출 관리</a></li>
+          <li><a href="#" class="admin-sub-link" data-section="admin-employee-section">직원 관리</a></li>
+        </ul>
+      </nav>
+      <!-- 관리자 매출 관리 화면 -->
+      <section id="admin-sales-section" class="admin-content-section">
+        <h3>매출 관리 (관리자용)</h3>
+        <form id="sale-form">
+          <input type="date" id="sale_date" required>
+          <input type="number" step="0.01" id="amount" placeholder="매출액" required>
+          <button type="submit">매출 등록</button>
+        </form>
+        <div id="sale-result" class="result"></div>
+        <button id="load-sales">매출 목록 불러오기</button>
+        <ul id="sale-list"></ul>
+        <button id="total-sales">총 매출액 확인</button>
+        <div id="total-sales-result" class="result"></div>
+      </section>
+      <!-- 관리자 직원 관리 화면 -->
+      <section id="admin-employee-section" class="admin-content-section" style="display: none;">
+        <h3>직원 관리 (관리자용)</h3>
+        <form id="employee-form">
+          <input type="text" id="employee_name_admin" placeholder="직원 이름" required>
+          <input type="email" id="employee_email_admin" placeholder="이메일" required>
+          <input type="text" id="employee_position_admin" placeholder="직책" required>
+          <input type="password" id="employee_password_admin" placeholder="비밀번호" required>
+          <button type="submit">직원 등록</button>
+        </form>
+        <div id="employee-result" class="result"></div>
+        <button id="load-employees">직원 목록 불러오기</button>
+        <ul id="employee-list"></ul>
+      </section>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 고객 및 직원 관리 시스템</p>
+  </footer>
+  <script src="/static/script.js"></script>
+</body>
+</html>
